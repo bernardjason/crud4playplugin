@@ -1,0 +1,156 @@
+@media only screen and (orientation:portrait) {
+	html body * {
+		display: none;
+	}
+	#warning-message {
+		display: block;
+		position: relative;
+		height: 200px;
+		position: absolute;
+		top: 50%; /* adjust this as needed */
+		left: 0;
+		width: 100%;
+		text-align: center;
+	}
+}
+
+@media only screen and (orientation:landscape) {
+	#warning-message {
+		display: none;
+	}
+	body {
+		background: #ffffff !important;
+	}
+	table, th, td {
+		border: 1px dotted #ffffff !important;
+	}
+	.navbar-default {
+		background: #0000FF;
+		border: 0;
+		margin-bottom: 0;
+		.
+		navbar-toggle
+		{
+		background
+		:
+		@
+		blue;
+	}
+}
+
+.navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:hover,
+	.navbar-default .navbar-nav>.active>a:focus {
+	color: #FFFFFF !important;
+	background-color: #7777AA !important;
+}
+
+.nav>li>a {
+	position: relative;
+	display: block;
+	color: #FFFFFF !important;
+	background-color: #0000AA !important;
+}
+
+.panel-heading {
+	background-color: #DDDDDD !important;
+}
+
+.jumbotron {
+	background-color: #DDDDDD !important;
+    background: url('/assets/images/dogsbody.png') no-repeat center center;
+    height:150px;
+	margin: 10px;
+	padding: 10px;
+}
+
+.loader {
+	border: 16px solid #f3f3f3; /* Light grey */
+	border-top: 16px solid #3498db; /* Blue */
+	border-radius: 50%;
+	width: 120px;
+	height: 120px;
+	animation: spin 2s linear infinite;
+}
+
+@
+keyframes spin { 0% {
+	transform: rotate(0deg);
+}
+
+100%
+{
+transform
+:
+ 
+rotate
+(360deg);
+ 
+}
+}
+.no-padding {
+	padding-right: 0 !important;
+	padding-left: 0 !important;
+}
+
+.save {
+	background-color: #4e9a06;
+}
+
+.delete {
+	background-color: #a40000;
+}
+
+.numb{
+	min-width:80px;
+	
+}
+
+.container.body-container{
+  left: 1%;
+  right: 1%;
+} 
+
+}
+
+.table tbody tr > td.warning {
+  background-color: #ff9999 !important;
+}
+.largeglyphicon {
+    font-size: 30px;
+}
+
+
+.fixed-tbody {
+background-color: #ebf7ff;
+    display:block;
+    height:200px;
+    overflow-y:scroll; /* doesnt size well otherwise when no data */
+    overflow-x:auto;
+}
+.fixed-thead, .fixed-tbody .fixed-tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;
+}
+.fixed-thead {
+    background-color:  #00aaff;
+    width: calc( 100% - 1em )
+}
+
+.table-header {
+background-color:  #00aaff;
+color:  #ffffff;
+}
+
+.glyphicon-sort {
+  margin-right: 5px;
+  margin-left: 0px;
+}
+.btn-sort {
+    text-align: left;
+    width:100%;
+    padding-left:0px;
+    margin-left: 0px;
+    margin-bottom: 0px;
+}
+

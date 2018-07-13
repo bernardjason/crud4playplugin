@@ -1,0 +1,17 @@
+@(crud:org.bjason.Crud)
+
+package @(crud.getPackageName)@(crud.name.toLowerCase).tables
+
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+
+import play.api.libs.json._
+import play.api.libs.json.Reads.StringReads
+
+case class @(crud.name)Model(@(crud.createModel))
+
+object @(crud.name)Model @(crud.objectMapper) {
+
+  implicit val jsonReadWriteFormatTrait = Json.using[Json.WithDefaultValues].format[@(crud.name)Model]
+}
+

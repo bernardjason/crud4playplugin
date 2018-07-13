@@ -1,0 +1,115 @@
+@(requestForm: Form[org.bjason.request.tables.RequestModel])(implicit request: MessagesRequestHeader)
+
+@import helper._
+
+@request.flash.get("success").map { key =>
+@request.messages(key)
+}
+
+@main("Welcome to Play") {
+
+<script>
+var columnSet=[ "request_id" , "request_name" , "request_desc" , "request_start_date" , "request_required_for_date" ]
+var optional=[ "request_start_date" , "request_required_for_date" ]
+
+function notOptional(name,value) {
+    for(var i in optional) {
+        if ( optional[i] ==  name && value == "" )  return false;
+    }
+    return true;
+}
+function formNew(selector) {
+
+    var json = {};
+    for(var i in columnSet) {
+        var name = columnSet[i];
+        var value = $('#'+name).val();
+        console.log(name +" "+value);
+        if ( notOptional(name,value) ) {
+            json[name] = value;
+        }
+    }
+
+    var csrf = $('input[name=csrfToken]').val()
+    $.ajax({
+       type : "POST",
+       headers: { 'Csrf-Token':csrf } ,
+       contentType : "application/json; charset=utf-8",
+       data : JSON.stringify(json),
+       url : '/tables/request',
+       success : function(json) {
+            getAll();
+       },
+       error : function(response) {
+               alert("error " + response.statusText + ":"+ response.status+" - " +response.responseText)
+       }
+    });
+}
+
+function getAll() {
+    $.ajax({
+         type : 'GET',
+         contentType : "application/json; charset=utf-8",
+         url : '/tables/request',
+         success : function(data) {
+
+                var txt = "<table class='table'>"
+                txt += "<thead>"
+                txt += "<tr>"
+                for(var i in columnSet) {
+                        txt += "<th scope='col'>" + columnSet[i] + "</th>";
+                }
+                txt += "</tr>"
+                txt += "</thead>"
+
+                for (y in data) {
+                    var row = data[y]
+                    txt += "<tr>"
+                    for(x in row) {
+                        txt += "<td>" + row[x] + "</td>";
+                    }
+                    txt += "</tr>"
+                }
+                txt += "</table>"
+                $('#currentData').html(txt);
+         },
+         error : function(response) {
+            alert("error " + response.statusText + ":"+ response.status+" - " +response.responseText)
+            }
+    });
+}
+
+getAll();
+
+
+</script>
+
+
+<div class="container">
+    <div id="requestTable">
+        <div id="requestDataTableDiv" style="padding-top:15px;">
+            <table id="requestDataTable" class="table table-bordered">
+            </table>
+        </div>
+
+
+        @form(routes.Application.index()) {
+        @inputText(requestForm("request_name"))
+        @inputText(requestForm("request_desc"))
+        @helper.inputDate(requestForm("request_start_date") ,'_class -> "", '_help -> "start date" )
+        @helper.inputDate(requestForm("request_required_for_date") ,'_class -> "", '_help -> "required for date"
+        )
+
+        @CSRF.formField
+        <div class="buttons">
+            <button type="button" onClick="formNew('#requestDataTable')" class="btn btn-primary"
+                    data-dismiss="modal">Ok Commit
+            </button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+        }
+    </div>
+</div>
+<div class="container" id="currentData">
+</div>
+}

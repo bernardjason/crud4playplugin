@@ -1,0 +1,44 @@
+@(crud:org.bjason.Crud)
+
+package @(crud.getPackageName)@(crud.name.toLowerCase).tables
+
+import java.sql.Timestamp
+
+import javax.inject.{Inject, Singleton}
+import play.api.db.slick.DatabaseConfigProvider
+import slick.jdbc.JdbcProfile
+
+import scala.concurrent.{ExecutionContext, Future}
+
+@@Singleton
+class @(crud.name)TableOperation @@Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) {
+  private val dbConfig = dbConfigProvider.get[JdbcProfile]
+
+  import dbConfig._
+  import profile.api._
+
+  private class @(crud.name)Table(tag: Tag) extends Table[@(crud.name)Model](tag, "@(crud.name.toUpperCase)") {
+@(crud.createTable)
+  }
+
+  private val request = TableQuery[@(crud.name)Table]
+
+@(crud.createCreate)
+@(crud.createUpdate)
+
+  def get( @(crud.fields(0).fieldName):@(crud.fields(0).fieldType) )   = db.run {
+    val row = for { row <- request.filter { r => r.@(crud.fields(0).fieldName) === @(crud.fields(0).fieldName) } } yield row
+    row.result.head
+  }
+
+  def delete(@(crud.fields(0).fieldName):@(crud.fields(0).fieldType) ) : Future[Long]  = db.run {
+    val row = for { row <- request.filter { r => r.@(crud.fields(0).fieldName) === @(crud.fields(0).fieldName) } } yield row
+    row.delete.map(returnStatus(_))
+  }
+
+  def list(): Future[Seq[@(crud.name)Model]]  = db.run {
+    request.result
+  }
+
+  def returnStatus(status:Long) =  status;
+}

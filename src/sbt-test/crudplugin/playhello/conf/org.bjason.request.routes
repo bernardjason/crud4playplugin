@@ -1,0 +1,5 @@
+GET     /               org.bjason.request.controllers.RequestApi.getAll
+GET     /:request_id          org.bjason.request.controllers.RequestApi.get(request_id:Long)
+POST    /               org.bjason.request.controllers.RequestApi.insertupdate
+PUT     /               org.bjason.request.controllers.RequestApi.insertupdate
+DELETE  /:request_id          org.bjason.request.controllers.RequestApi.delete(request_id:Long)

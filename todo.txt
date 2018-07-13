@@ -1,0 +1,22 @@
+
+  tests
+
+  scripted to test plugin
+
+    proper logging
+    Do I need a GET / and a GET /:id?
+   Do I have enough tests to cleanup GenerateFromConfig
+
+-----------------------------
+   TO DO
+
+   how to add security to api controller? Need to allow for Default Action.async to be overridden with X.async
+
+
+   where to host plugin?? bintray
+
+  some rubbish in play project like javascript files (they are in index.html)
+
+---------------------------------
+Future
+    unit tests, generate?? Would be nice touch

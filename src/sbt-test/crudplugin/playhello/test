@@ -1,0 +1,17 @@
+# check if the file gets created
+> clean
+> test
+$ exists target/scala-2.12/src_managed/main/org/bjason/request/controllers/RequestApi.scala
+$ exists target/scala-2.12/src_managed/main/org/bjason/request/tables
+$ exists target/scala-2.12/src_managed/main/org/bjason/request/tables/RequestModel.scala
+$ exists target/scala-2.12/src_managed/main/org/bjason/request/tables/RequestTableOperation.scala
+$ exists target/scala-2.12/src_managed/main/org/bjason/request/tables/DateConvert.scala
+$ exists target/scala-2.12/classes/org/bjason/request/controllers/RequestApi.class
+$ exists target/scala-2.12/classes/org/bjason/request/tables/DateConvert$.class
+$ exists target/scala-2.12/classes/org/bjason/request/tables/RequestModel$.class
+$ exists target/scala-2.12/classes/org/bjason/request/tables/DateConvert.class
+$ exists target/scala-2.12/classes/org/bjason/request/tables/RequestModel.class
+$ exists target/scala-2.12/classes/org/bjason/request/tables/RequestTableOperation$RequestTable.class
+$ exists target/scala-2.12/classes/org/bjason/request/tables/DateConvert$jobsTimestampFormat$.class
+$ exists target/scala-2.12/classes/org/bjason/request/tables/RequestTableOperation.class
+

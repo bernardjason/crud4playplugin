@@ -1,0 +1,24 @@
+@(crud:org.bjason.Crud)
+
+package @(crud.getPackageName)@(crud.name.toLowerCase).tables
+
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+
+import play.api.libs.json.{Format, JsString, JsSuccess, JsValue}
+
+abstract class DateConvert(inDateFormat:String="yyyy-MM-dd", outDateFormat:String="yyyy-MM-dd") {
+  implicit object jobsTimestampFormat extends Format[Timestamp] {
+
+    def reads(json: JsValue) = {
+      val inFormat = new SimpleDateFormat(inDateFormat)
+      val str = json.as[String]
+      JsSuccess(new Timestamp(inFormat.parse(str).getTime))
+    }
+
+    def writes(ts: Timestamp) = {
+      val printFormat = new SimpleDateFormat(outDateFormat)
+      JsString(printFormat.format(ts))
+    }
+  }
+}

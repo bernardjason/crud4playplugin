@@ -1,0 +1,74 @@
+@(crud:org.bjason.Crud)
+
+package @(crud.getPackageName)@(crud.name.toLowerCase).controllers
+
+import scala.util.{Failure, Success}
+import javax.inject._
+import play.api.libs.json.Json
+import play.api.mvc._
+import @(crud.getPackageName)@(crud.name.toLowerCase).tables.{@(crud.name)Model, @(crud.name)TableOperation}
+import play.api.Logger
+import scala.concurrent.ExecutionContext
+import play.api.Logger
+
+@@Singleton
+class @(crud.name)Api @@Inject()(repo: @(crud.name)TableOperation,
+                           cc: MessagesControllerComponents
+                           )(implicit ec: ExecutionContext)
+  extends MessagesAbstractController(cc) {
+
+  def insertupdate = Action.async(parse.json) { implicit request =>
+    val data = request.body.as[@(crud.name)Model]
+    Logger.info(s"${request.method} ${request.uri} ${request.body} ${data}")
+    if ( request.method == "PUT" ) {
+      repo.update(data.request_id, data.request_name, data.request_desc, data.request_start_date, data.request_required_for_date).map { x =>
+        x match {
+          case 1 => Ok(Json.toJson(data))
+          case _ =>  NotFound
+        }
+      }.recover {
+        case e =>Logger.error("Caught exception: ",e)
+          InternalServerError
+      }
+    } else {
+      repo.create(data.request_name, data.request_desc, data.request_start_date, data.request_required_for_date).map { x =>
+        Ok(Json.toJson(x))
+      }.recover {
+        case e =>Logger.error("Caught exception: ",e)
+          InternalServerError
+      }
+    }
+  }
+
+  def get(@(crud.fields(0).fieldName):@(crud.fields(0).fieldType)) = Action.async { implicit request =>
+    Logger.info(s"${request.method}  ${request.uri}")
+    repo.get(@(crud.fields(0).fieldName)).map { data =>
+      Ok(Json.toJson(data))
+    }.recover{
+      case e:java.util.NoSuchElementException =>Logger.debug("Not found "+@(crud.fields(0).fieldName))
+        NotFound
+      case e =>Logger.error("Caught exception: ",e)
+        InternalServerError
+    }
+  }
+
+  def delete(@(crud.fields(0).fieldName):@(crud.fields(0).fieldType)) = Action.async { implicit request =>
+    Logger.info(s"${request.method}  ${request.uri}")
+    repo.delete(@(crud.fields(0).fieldName)).map { x =>
+      x match {
+        case 1 => Ok
+        case _ =>  NotFound
+      }
+    }
+  }
+  def getAll = Action.async { implicit request =>
+    Logger.info(s"${request.method} ${request.uri}")
+    repo.list().map { data =>
+      Ok(Json.toJson(data))
+    }.recover {
+      case e =>Logger.error("Caught exception: ",e)
+        InternalServerError
+
+    }
+  }
+}
