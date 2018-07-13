@@ -9,33 +9,6 @@ object CrudPlugin extends AutoPlugin {
   var createHere = "."
   val suffix = ".conf"
 
-  lazy val helloCommand =
-    Command.command("hello") { (state: State) =>
-
-      println("Hi!")
-      state
-    }
-
-  /*
-  lazy val crudCommand =
-    Command.command("crud") { (state: State) =>
-
-      val all = processAllFiles( ( sourceManaged in Compile).value )
-      all.map{ f => println(f) }
-      state
-    }
-    */
-
-  // by defining autoImport, the settings are automatically imported into user's `*.sbt`
-  object autoImport {
-    // configuration points, like the built-in `version`, `libraryDependencies`, or `compile`
-
-    val swaggerClean = taskKey[Unit]("Clean swagger generated packages")
-  }
-
-
-  import autoImport._
-
   override def requires = sbt.plugins.JvmPlugin
 
   // This plugin is automatically enabled for projects which are JvmPlugin.
@@ -44,16 +17,6 @@ object CrudPlugin extends AutoPlugin {
 
   override lazy val projectSettings = {
     Seq(
-      commands += helloCommand,
-      //commands += crudCommand,
-      /*
-      sourceGenerators in Compile += Def.task {
-        val contains = org.bjason.txt.Hello.render("Detention","org.bjason.hello")
-        val file = (sourceManaged in Compile).value / "org/bjason/hello" / "Detention.scala"
-        IO.write(file, contains.toString )
-        Seq(file)
-      }.taskValue)
-      */
       sourceGenerators in Compile += Def.task {
         val all = processAllFiles( ( sourceManaged in Compile).value )
         all.map{ f => println(s"Created ${f}")}
