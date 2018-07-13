@@ -31,6 +31,7 @@ releaseProcess := Seq(
   setReleaseVersion,
   commitReleaseVersion,
   tagRelease,
+  publishArtifacts,
   setNextVersion,
   commitNextVersion
 )
