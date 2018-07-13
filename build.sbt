@@ -1,7 +1,7 @@
 lazy val commonSettings = Seq(
   //version in ThisBuild := "0.1-SNAPSHOT",
   organization in ThisBuild := "org.bjason",
-  git.baseVersion := "0.1-SNAPSHOT",
+  //git.baseVersion := "0.1-SNAPSHOT",
   git.useGitDescribe := true
 )
 
