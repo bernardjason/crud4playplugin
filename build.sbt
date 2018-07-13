@@ -15,7 +15,7 @@ lazy val root = (project in file("."))
     // (using a canonical name).
     licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0.html")),
     publishMavenStyle := false,
-    bintrayRepository := "sbt-plugins",
+    bintrayRepository := "org.bjason",
     bintrayOrganization in bintray := None
   ).enablePlugins(SbtTwirl,GitVersioning)
 
