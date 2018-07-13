@@ -1,7 +1,5 @@
 lazy val commonSettings = Seq(
-  //version in ThisBuild := "0.1-SNAPSHOT",
   organization in ThisBuild := "org.bjason",
-  //git.baseVersion := "0.1-SNAPSHOT",
   git.useGitDescribe := true
 )
 
@@ -19,6 +17,15 @@ lazy val root = (project in file("."))
     bintrayOrganization in bintray := None
   ).enablePlugins(SbtTwirl,GitVersioning)
 
+
+libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.5"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % "test"
+libraryDependencies += "com.typesafe" % "config" % "1.3.2"
+
+scalaVersion := "2.12.6"
+
+sbtPlugin := true
+
 releaseVersionFile := file("version.sbt")
 
 import sbtrelease.ReleaseStateTransformations._
@@ -33,21 +40,12 @@ releaseProcess := Seq(
   tagRelease,
   publishArtifacts,
   setNextVersion,
-  commitNextVersion
+  commitNextVersion,
+  pushChanges
 )
-
-scalaVersion := "2.12.6"
-
-sbtPlugin := true
 
 scriptedLaunchOpts := { scriptedLaunchOpts.value ++
   Seq("-Xmx1024M", "-Dplugin.version=" + version.value)
 }
+
 scriptedBufferLog := false
-
-//lazy val root = (project in file(".")).enablePlugins(SbtTwirl)
-
-libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.5"
-libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % "test"
-libraryDependencies += "com.typesafe" % "config" % "1.3.2"
-
