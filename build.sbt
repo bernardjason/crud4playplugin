@@ -1,5 +1,5 @@
 lazy val commonSettings = Seq(
-  version in ThisBuild := "0.1-SNAPSHOT",
+  //version in ThisBuild := "0.1-SNAPSHOT",
   organization in ThisBuild := "org.bjason",
   git.baseVersion := "0.1-SNAPSHOT",
   git.useGitDescribe := true
@@ -19,7 +19,21 @@ lazy val root = (project in file("."))
     bintrayOrganization in bintray := None
   ).enablePlugins(SbtTwirl,GitVersioning)
 
-//enablePlugins(GitVersioning)
+releaseVersionFile := file("version.sbt")
+
+import sbtrelease.ReleaseStateTransformations._
+
+releaseProcess := Seq(
+  checkSnapshotDependencies,
+  inquireVersions,
+  runClean,
+  runTest,
+  setReleaseVersion,
+  commitReleaseVersion,
+  tagRelease,
+  setNextVersion,
+  commitNextVersion
+)
 
 scalaVersion := "2.12.6"
 
