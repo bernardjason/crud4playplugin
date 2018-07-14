@@ -37,6 +37,7 @@ if we want to be able to call the crud api with a uri like
 /table/request
 
 ## conf file format
+```
 model = {
     name = "<same as filename>"
         packageName = "<start of package name>"
@@ -46,10 +47,10 @@ model = {
                         name = "<scala field name>"
                         type = "<scala type, can be an Option too>"
                         column = "<database column name>"
-                        column_definition = "<optional entry see //slick.lightbend.com/doc/3.0.0/schemas.html>"
+                        column_definition = "<optional entry see http://slick.lightbend.com/doc/3.0.0/schemas.html>"
                 }, ....
 
         ]
         object_mapper = "<optional if the table has a timestamp to convert>"
 }
-
+```
