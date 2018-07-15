@@ -40,13 +40,26 @@ case class Crud(name:String,packageName:String,fields:List[Field],objectMapper:S
       result.append(s""" )\n""")
     }
     result.append(s"      def * = (")
-    var comma=false
-    for (f <- fields) {
-      if ( comma ) result.append(",") else comma = true
-      result.append(s"""${f.fieldName}""")
-    }
+
+
+    result.append( getFieldNameList() )
     result.append(s""") <> (( ${name}Model.apply _).tupled,${name}Model.unapply)""")
 
+    result.toString()
+  }
+
+  def getFieldNameList(objPrefix:String="",skipPrimaryKey:Boolean=false) = {
+    val result = new StringBuilder
+    var comma=false
+    var skipNow=true;
+    for (f <- fields) {
+      if (  skipPrimaryKey && skipNow ) {
+        skipNow=false
+      } else {
+        if (comma) result.append(",") else comma = true
+        result.append(s"""${objPrefix}${f.fieldName}""")
+      }
+    }
     result.toString()
   }
 
@@ -141,7 +154,9 @@ case class GenerateFromConfig(fileName:String) {
         columnDefinition
       )
     }
-    val objectMapper = model.getString("object_mapper")
+    val objectMapper = if ( model.hasPath("object_mapper") )
+      model.getString("object_mapper")
+    else ""
 
     Crud(name,packageName,fields.toList,objectMapper)
   }

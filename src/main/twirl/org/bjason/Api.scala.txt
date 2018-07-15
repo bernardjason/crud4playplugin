@@ -21,7 +21,7 @@ class @(crud.name)Api @@Inject()(repo: @(crud.name)TableOperation,
     val data = request.body.as[@(crud.name)Model]
     Logger.info(s"${request.method} ${request.uri} ${request.body} ${data}")
     if ( request.method == "PUT" ) {
-      repo.update(data.request_id, data.request_name, data.request_desc, data.request_start_date, data.request_required_for_date).map { x =>
+      repo.update(@(crud.getFieldNameList(objPrefix="data."))).map { x =>
         x match {
           case 1 => Ok(Json.toJson(data))
           case _ =>  NotFound
@@ -31,7 +31,7 @@ class @(crud.name)Api @@Inject()(repo: @(crud.name)TableOperation,
           InternalServerError
       }
     } else {
-      repo.create(data.request_name, data.request_desc, data.request_start_date, data.request_required_for_date).map { x =>
+      repo.create(@(crud.getFieldNameList(objPrefix="data.",skipPrimaryKey=true))).map { x =>
         Ok(Json.toJson(x))
       }.recover {
         case e =>Logger.error("Caught exception: ",e)
