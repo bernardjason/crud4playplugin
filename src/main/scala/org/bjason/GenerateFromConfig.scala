@@ -5,7 +5,7 @@ import java.io.File
 import com.typesafe.config.{ConfigFactory, ConfigObject, ConfigValue}
 import scala.collection.JavaConverters._
 
-case class Crud(name:String,packageName:String,fields:List[Field],objectMapper:String) {
+case class Crud(name:String,packageName:String,fields:List[Field],objectMapper:String,fromFile:File) {
 
   fields(0).fieldName
   def createModel() = {
@@ -139,7 +139,8 @@ case class GenerateFromConfig(fileName:String) {
 
   //def fromConfig(filename:String="src/test/resources/Request.conf") {
   def fromConfig()  = {
-    val conf = ConfigFactory.parseFile(new File(fileName))
+    val confFile = new File(fileName);
+    val conf = ConfigFactory.parseFile(confFile)
     val model = conf.getConfig("model")
     val name = model.getString("name")
     val packageName = model.getString("packageName")
@@ -158,6 +159,6 @@ case class GenerateFromConfig(fileName:String) {
       model.getString("object_mapper")
     else ""
 
-    Crud(name,packageName,fields.toList,objectMapper)
+    Crud(name,packageName,fields.toList,objectMapper,confFile)
   }
 }

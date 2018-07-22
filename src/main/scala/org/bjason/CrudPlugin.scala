@@ -19,10 +19,8 @@ object CrudPlugin extends AutoPlugin {
     Seq(
       sourceGenerators in Compile += Def.task {
         val all = processAllFiles( ( sourceManaged in Compile).value )
-        all.map{ f => println(s"Created ${f}")}
+        //all.map{ f => println(s"Created ${f}")}
         all.toSeq
-        //val crud = Crud("Request","org.bjason.demo",List(),"")
-        //val createCode = CreateCode( (sourceManaged in Compile).value.toString, crud)
       }.taskValue)
   }
 

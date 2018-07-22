@@ -5,7 +5,15 @@ import java.io.{BufferedWriter, File, FileWriter}
 //case class CreateCode(fullPath:String,namespace:String,table:String) {
 case class CreateCode(fullPath:String,crud:Crud) {
 
-  new File(namespaceAsPath).mkdirs();
+  val namespaceOutputDir = new File(namespaceAsPath) ;
+  namespaceOutputDir.mkdirs();
+  def isConfNewerThanOutput(output:File)  = if ( crud.fromFile.lastModified() > output.lastModified() ) {
+    println(s"Creating ${output}")
+    true
+  } else {
+    false
+  }
+
 
   val modelExpanded = org.bjason.txt.Model.render(crud)
   val apiExpanded = org.bjason.txt.Api.render(crud)
@@ -20,36 +28,44 @@ case class CreateCode(fullPath:String,crud:Crud) {
     val path = s"${namespaceAsPath}/${tableName}/tables"
     new File(path).mkdirs()
     val file = new File( s"${path}/${crud.name}Model.scala" );
-    val bw = new BufferedWriter(new FileWriter(file))
-    bw.write(modelExpanded.toString)
-    bw.close();
+    if ( isConfNewerThanOutput(file) ) {
+      val bw = new BufferedWriter(new FileWriter(file))
+      bw.write(modelExpanded.toString)
+      bw.close();
+    }
     file
   }
   def createApi: File = {
     val path = s"${namespaceAsPath}/${tableName}/controllers"
     new File(path).mkdirs()
     val file = new File( s"${path}/${crud.name}Api.scala" );
-    val bw = new BufferedWriter(new FileWriter(file))
-    bw.write(apiExpanded.toString)
-    bw.close();
+    if ( isConfNewerThanOutput(file) ) {
+      val bw = new BufferedWriter(new FileWriter(file))
+      bw.write(apiExpanded.toString)
+      bw.close();
+    }
     file
   }
   def createTable: File = {
     val path = s"${namespaceAsPath}/${tableName}/tables"
     new File(path).mkdirs()
     val file = new File( s"${path}/${crud.name}TableOperation.scala" );
-    val bw = new BufferedWriter(new FileWriter(file))
-    bw.write(tableExpanded.toString)
-    bw.close();
+    if ( isConfNewerThanOutput(file) ) {
+      val bw = new BufferedWriter(new FileWriter(file))
+      bw.write(tableExpanded.toString)
+      bw.close();
+    }
     file
   }
   def createDataConvert: File = {
     val path = s"${namespaceAsPath}/${tableName}/tables"
     new File(path).mkdirs()
     val file = new File( s"${path}/DateConvert.scala" );
-    val bw = new BufferedWriter(new FileWriter(file))
-    bw.write(dataConvert.toString)
-    bw.close();
+    if ( isConfNewerThanOutput(file) ) {
+      val bw = new BufferedWriter(new FileWriter(file))
+      bw.write(dataConvert.toString)
+      bw.close();
+    }
     file
   }
 
@@ -58,10 +74,12 @@ case class CreateCode(fullPath:String,crud:Crud) {
     val path = s"${fullPath}/../../../../conf"
     new File(path).mkdirs()
     val file = new File( s"${path}/${crud.packageName}.${tableName}.routes" );
-    val bw = new BufferedWriter(new FileWriter(file))
-    bw.write(routesExpanded.toString)
-    bw.close();
-    println("Make sure an entry like this is in main routes file")
+    if ( isConfNewerThanOutput(file) ) {
+      val bw = new BufferedWriter(new FileWriter(file))
+      bw.write(routesExpanded.toString)
+      bw.close();
+    }
+    println("crud plugin. Make sure an entry like this is in main routes file")
     println(s"-> <prefix url> ${crud.packageName}.${tableName}.Routes")
   }
 
@@ -69,9 +87,11 @@ case class CreateCode(fullPath:String,crud:Crud) {
     val path = s"${namespaceAsPath}/${tableName}/controllers"
     new File(path).mkdirs()
     val file = new File( s"${path}/CrudAction.scala" );
-    val bw = new BufferedWriter(new FileWriter(file))
-    bw.write(crudActionExpanded.toString)
-    bw.close();
+    if ( isConfNewerThanOutput(file) ) {
+      val bw = new BufferedWriter(new FileWriter(file))
+      bw.write(crudActionExpanded.toString)
+      bw.close();
+    }
     file
   }
 
