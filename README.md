@@ -2,15 +2,38 @@
 
 this plugin can be used to generate the boiler plate code to access a
 database and provide a rest api for it that offers create read update delete.
+I use Slick for the database access.
 
-There is a sample test project under directory
+There are sample test projects under directory
+
+a simple project
 
 [src/sbt-test/crudplugin/playhello](src/sbt-test/crudplugin/playhello)
 
 that shows how the configuration file
+
 [conf/crud/Request.conf](conf/crud/Request.conf)
 
-is used to generate some slick db code to perform usual sql operations.
+generates some simple code with an event simple form to create entries. There are
+also from curl commands as well.
+
+A more complicated 2 table example.
+
+[src/sbt-test/crudplugin/blog](src/sbt-test/crudplugin/blog)
+
+This one is a simple blog that shows a user table and a blog table. The user
+table holds 1 entry for demo purposes, see
+[src/sbt-test/crudplugin/blog/conf/evolutions/1.sql](src/sbt-test/crudplugin/blog/conf/eveolutions/1.sql). Without logging on the blog api is unavilable.
+
+The example project shows uses a Module to override the generated Action implementation
+and the project provides its own authentication classes. The project also includes
+a better example of mapping the date from json to a timestamp in the conf file
+```
+object_mapper = "extends DateConvert(inDateFormat=\"YYYY-MM-dd HH:mm:ss\" , outDateFormat=\"YYYY-MM-dd HH:mm:ss\")"
+```
+
+## details
+The configuration file is used to generate some slick db code to perform usual sql operations.
 The generated scala code is directory target/scala-2.12/src_managed/main
 
 The plugin will scan for all files under conf/crud and generate a set of
@@ -19,6 +42,8 @@ files
 * TableOperation.scala holds the slick code for db operations
 * Api.scala is the scala code for play to expose api
 * DataConvert is a class for handling mapping db timestamp to json
+* CrudAction is a trait and class for the api that can be overriden to implement
+authentication.
 
 the plugin also generates a routes file in conf using the package as
 defined in the equivalent conf/crud file
@@ -54,3 +79,12 @@ model = {
         object_mapper = "<optional if the table has a timestamp to convert>"
 }
 ```
+
+
+the plugin can be built and tested using
+```
+sbt:crud4playplugin> scripted
+```
+
+
+
