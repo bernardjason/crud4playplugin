@@ -33,7 +33,7 @@ object CrudPlugin extends AutoPlugin {
       val crud = GenerateFromConfig(conf.toString)
       val createCode = CreateCode(baseDir.toString,crud.fromConfig() ) ;
       createCode.createRoutes
-      List(createCode.createApi,createCode.createModel,createCode.createTable,createCode.createDataConvert)
+      List(createCode.createApi,createCode.createModel,createCode.createTable,createCode.createDataConvert,createCode.createCrudAction)
     }
     allFiles.flatten
   }

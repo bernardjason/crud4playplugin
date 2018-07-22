@@ -1,0 +1,13 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                   @controllers.Application.index
+POST     /                  @controllers.Application.login
+GET     /logout             @controllers.Application.logout
+GET      /assets/*file      @controllers.Assets.at(path="/public", file)
+
+# need this to reference generated route
+-> /tables/user org.bjason.blog.user.Routes
+-> /tables/blog org.bjason.blog.blog.Routes

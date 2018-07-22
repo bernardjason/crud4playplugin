@@ -126,7 +126,7 @@ class BasicTests extends FlatSpec with MustMatchers {
     val output = new File("target/tmp/target/scala-2.12/src_managed/main/")
     output.mkdirs()
     val files = CrudPlugin.processAllFiles(output)
-    files.length should equal (4)
+    files.length should equal (5)
     files(0).toString should equal (s"${output}/${packageName}/controllers/RequestApi.scala")
     files(1).toString should equal (s"${output}/${packageName}/tables/RequestModel.scala")
     files(2).toString should equal (s"${output}/${packageName}/tables/RequestTableOperation.scala")
@@ -142,7 +142,7 @@ class BasicTests extends FlatSpec with MustMatchers {
     val output = new File("target/tmp/target/scala-2.12/src_managed/main/")
     output.mkdirs()
     val files = CrudPlugin.processAllFiles(output)
-    files.length should equal (4)
+    files.length should equal (5)
     val route = new File("target/tmp/conf/org.bjason.request.routes")
     route should exist
     Source.fromFile(route).toList.mkString should equal(

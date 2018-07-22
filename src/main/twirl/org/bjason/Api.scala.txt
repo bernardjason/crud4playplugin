@@ -12,12 +12,12 @@ import scala.concurrent.ExecutionContext
 import play.api.Logger
 
 @@Singleton
-class @(crud.name)Api @@Inject()(repo: @(crud.name)TableOperation,
+class @(crud.name)Api @@Inject()(action:CrudActionTrait  , repo: @(crud.name)TableOperation,
                            cc: MessagesControllerComponents
                            )(implicit ec: ExecutionContext)
   extends MessagesAbstractController(cc) {
 
-  def insertupdate = Action.async(parse.json) { implicit request =>
+  def insertupdate = action.async(parse.json) { implicit request =>
     val data = request.body.as[@(crud.name)Model]
     Logger.info(s"${request.method} ${request.uri} ${request.body} ${data}")
     if ( request.method == "PUT" ) {
@@ -40,7 +40,7 @@ class @(crud.name)Api @@Inject()(repo: @(crud.name)TableOperation,
     }
   }
 
-  def get(@(crud.fields(0).fieldName):@(crud.fields(0).fieldType)) = Action.async { implicit request =>
+  def get(@(crud.fields(0).fieldName):@(crud.fields(0).fieldType)) = action.async { implicit request =>
     Logger.info(s"${request.method}  ${request.uri}")
     repo.get(@(crud.fields(0).fieldName)).map { data =>
       Ok(Json.toJson(data))
@@ -52,7 +52,7 @@ class @(crud.name)Api @@Inject()(repo: @(crud.name)TableOperation,
     }
   }
 
-  def delete(@(crud.fields(0).fieldName):@(crud.fields(0).fieldType)) = Action.async { implicit request =>
+  def delete(@(crud.fields(0).fieldName):@(crud.fields(0).fieldType)) = action.async { implicit request =>
     Logger.info(s"${request.method}  ${request.uri}")
     repo.delete(@(crud.fields(0).fieldName)).map { x =>
       x match {
@@ -61,7 +61,7 @@ class @(crud.name)Api @@Inject()(repo: @(crud.name)TableOperation,
       }
     }
   }
-  def getAll = Action.async { implicit request =>
+  def getAll = action.async { implicit request =>
     Logger.info(s"${request.method} ${request.uri}")
     repo.list().map { data =>
       Ok(Json.toJson(data))

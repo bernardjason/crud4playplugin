@@ -12,6 +12,7 @@ case class CreateCode(fullPath:String,crud:Crud) {
   val tableExpanded = org.bjason.txt.TableOperation.render(crud)
   val dataConvert = org.bjason.txt.DateConvert.render(crud)
   val routesExpanded = org.bjason.txt.routes.render(crud)
+  val crudActionExpanded = org.bjason.txt.CrudAction.render(crud)
 
   val tableName = crud.name.toLowerCase
 
@@ -62,6 +63,16 @@ case class CreateCode(fullPath:String,crud:Crud) {
     bw.close();
     println("Make sure an entry like this is in main routes file")
     println(s"-> <prefix url> ${crud.packageName}.${tableName}.Routes")
+  }
+
+  def createCrudAction: File = {
+    val path = s"${namespaceAsPath}/${tableName}/controllers"
+    new File(path).mkdirs()
+    val file = new File( s"${path}/CrudAction.scala" );
+    val bw = new BufferedWriter(new FileWriter(file))
+    bw.write(crudActionExpanded.toString)
+    bw.close();
+    file
   }
 
   def namespaceAsPath  = fullPath+"/"+crud.packageName.replaceAll("[.]","/")

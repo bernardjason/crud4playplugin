@@ -1,21 +1,27 @@
 
-  tests
-
-  scripted to test plugin
-
-    proper logging
-    Do I need a GET / and a GET /:id?
-   Do I have enough tests to cleanup GenerateFromConfig
-
 -----------------------------
    TO DO
 
    how to add security to api controller? Need to allow for Default Action.async to be overridden with X.async
 
+    another example test project.
+        2 tables
+        1 user -> user_id, user_name and user_password
+        2 blog -> blog_id , user_id , blog_created , blog_text
 
-   where to host plugin?? bintray
+        login as user
+        blog as user
+        curl for admin
 
-  some rubbish in play project like javascript files (they are in index.html)
+
+
+for every api generate Action class and a trait
+module bind trait to a class.
+                # default to play.api.mvc.Action
+                api_Inject = "controllers.SecuredAction"
+                #default to Action
+                action = "securedAction.Action"
+
 
 ---------------------------------
 Future

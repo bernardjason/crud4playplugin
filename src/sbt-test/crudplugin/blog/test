@@ -1,0 +1,34 @@
+# check if the file gets created
+> clean
+> test
+$ exists target/scala-2.12/src_managed/main/org/bjason/blog/user/controllers/CrudAction.scala
+$ exists target/scala-2.12/src_managed/main/org/bjason/blog/user/controllers/UserApi.scala
+$ exists target/scala-2.12/src_managed/main/org/bjason/blog/user/tables/UserTableOperation.scala
+$ exists target/scala-2.12/src_managed/main/org/bjason/blog/user/tables/UserModel.scala
+$ exists target/scala-2.12/src_managed/main/org/bjason/blog/user/tables/DateConvert.scala
+$ exists target/scala-2.12/src_managed/main/org/bjason/blog/blog/controllers/BlogApi.scala
+$ exists target/scala-2.12/src_managed/main/org/bjason/blog/blog/controllers/CrudAction.scala
+$ exists target/scala-2.12/src_managed/main/org/bjason/blog/blog/tables/BlogModel.scala
+$ exists target/scala-2.12/src_managed/main/org/bjason/blog/blog/tables/BlogTableOperation.scala
+$ exists target/scala-2.12/src_managed/main/org/bjason/blog/blog/tables/DateConvert.scala
+$ exists target/scala-2.12/classes/org/bjason/blog/user/tables/DateConvert$.class
+$ exists target/scala-2.12/classes/org/bjason/blog/user/tables/UserModel$.class
+$ exists target/scala-2.12/classes/org/bjason/blog/user/tables/UserTableOperation$UserTable.class
+$ exists target/scala-2.12/classes/org/bjason/blog/user/tables/DateConvert.class
+$ exists target/scala-2.12/classes/org/bjason/blog/user/tables/UserModel.class
+$ exists target/scala-2.12/classes/org/bjason/blog/user/tables/UserTableOperation.class
+$ exists target/scala-2.12/classes/org/bjason/blog/user/tables/DateConvert$jobsTimestampFormat$.class
+$ exists target/scala-2.12/classes/org/bjason/blog/blog/tables/DateConvert$.class
+$ exists target/scala-2.12/classes/org/bjason/blog/blog/tables/BlogModel.class
+$ exists target/scala-2.12/classes/org/bjason/blog/blog/tables/BlogTableOperation$BlogTable.class
+$ exists target/scala-2.12/classes/org/bjason/blog/blog/tables/DateConvert.class
+$ exists target/scala-2.12/classes/org/bjason/blog/blog/tables/BlogModel$.class
+$ exists target/scala-2.12/classes/org/bjason/blog/blog/tables/BlogTableOperation.class
+$ exists target/scala-2.12/classes/org/bjason/blog/blog/tables/DateConvert$jobsTimestampFormat$.class
+$ exists target/scala-2.12/classes/org/bjason/blog/user/controllers/CrudActionImplementation.class
+$ exists target/scala-2.12/classes/org/bjason/blog/user/controllers/CrudActionTrait.class
+$ exists target/scala-2.12/classes/org/bjason/blog/user/controllers/UserApi.class
+$ exists target/scala-2.12/classes/org/bjason/blog/blog/controllers/CrudActionImplementation.class
+$ exists target/scala-2.12/classes/org/bjason/blog/blog/controllers/BlogApi.class
+$ exists target/scala-2.12/classes/org/bjason/blog/blog/controllers/CrudActionTrait.class
+

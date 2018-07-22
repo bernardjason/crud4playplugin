@@ -1,0 +1,181 @@
+@(userForm: Form[org.bjason.blog.user.tables.UserModel],
+blogForm:Form[org.bjason.blog.blog.tables.BlogModel],
+userModel:Option[org.bjason.blog.user.tables.UserModel] )(implicit request: MessagesRequestHeader)
+
+@import helper._
+@import org.bjason.blog.user.tables.UserModel
+
+@main("Welcome to Play") {
+
+<script>
+var columnSet=[ "blog_user_handle" , "blog_created" , "blog_text" ]
+var userSet = [ "user_name", "user_password" ]
+var optional=[ ]
+
+function notOptional(name,value) {
+    for(var i in optional) {
+        if ( optional[i] ==  name && value == "" )  return false;
+    }
+    return true;
+}
+function postNewBlog() {
+    var m = new Date();
+    var dateString =
+        m.getUTCFullYear() + "-" +
+        ("0" + (m.getUTCMonth()+1)).slice(-2) + "-" +
+        ("0" + m.getUTCDate()).slice(-2) + " " +
+        ("0" + m.getUTCHours()).slice(-2) + ":" +
+        ("0" + m.getUTCMinutes()).slice(-2) + ":" +
+        ("0" + m.getUTCSeconds()).slice(-2);
+
+
+    var json = {};
+    @if(userModel.nonEmpty) {
+    json["blog_text"] = $('#blog_text').val();
+    json["blog_created"] = dateString;
+    json["blog_user_id"] = @userModel.get.user_id;
+    json["blog_user_handle"] = '@userModel.get.user_handle';
+    }
+    console.log(JSON.stringify(json));
+
+    var csrf = $('input[name=csrfToken]').val()
+    $.ajax({
+       type : "POST",
+       headers: { 'Csrf-Token':csrf } ,
+       contentType : "application/json; charset=utf-8",
+       data : JSON.stringify(json),
+       url : '/tables/blog',
+       success : function(json) {
+            getAll();
+       },
+       error : function(response) {
+               alert("error " + response.statusText + ":"+ response.status+" - " +response.responseText)
+       }
+    });
+}
+function login() {
+    var json = {};
+    for(var i in userSet) {
+        var name = userSet[i];
+        var value = $('#'+name).val();
+        console.log(name +" "+value);
+        if ( notOptional(name,value) ) {
+            json[name] = value;
+        }
+    }
+    console.log(JSON.stringify(json))
+    var csrf = $('input[name=csrfToken]').val()
+    $.ajax({
+       type : "POST",
+       headers: { 'Csrf-Token':csrf } ,
+       contentType : "application/json; charset=utf-8",
+       data : JSON.stringify(json),
+       url : '/',
+       success : function(json) {
+            location.reload();
+       },
+       error : function(response) {
+               alert("error " + response.statusText + ":"+ response.status+" - " +response.responseText)
+       }
+    });
+}
+
+function getAll() {
+    $.ajax({
+         type : 'GET',
+         contentType : "application/json; charset=utf-8",
+         url : '/tables/blog',
+         success : function(data) {
+
+                var txt = "<table class='table'>"
+                txt += "<thead>"
+                txt += "<tr>"
+                for(var i in columnSet) {
+                        txt += "<th scope='col'>" + columnSet[i] + "</th>";
+                }
+                txt += "</tr>"
+                txt += "</thead>"
+
+                data.sort(function(a, b){
+                    aa=parseInt(a['blog_id']) ;
+                    bb=parseInt(b['blog_id']) ;
+                    return bb - aa });
+                for (y in data) {
+                    var row = data[y]
+                    txt += "<tr>"
+
+                    txt += "<td>" + row["blog_user_handle"] + "</td>";
+                    txt += "<td>" + row["blog_created"] + "</td>";
+                    txt += "<td>" + row["blog_text"] + "</td>";
+                    txt += "</tr>"
+                }
+                txt += "</table>"
+                $('#currentData').html(txt);
+         },
+         error : function(response) {
+            alert("error " + response.statusText + ":"+ response.status+" - " +response.responseText)
+            }
+    });
+}
+
+$( document ).ready(function() {
+    @if(userModel.nonEmpty) {
+        getAll();
+    } else {
+        $('#currentData').html("Must be logged in to view blogs")
+    }
+});
+</script>
+
+
+<div class="container">
+    @if(userModel.isEmpty) {
+    <div class="panel panel-default">
+        <div class="panel-heading">Login</div>
+        <div class="panel-body">
+            @form(routes.Application.index()) {
+            @inputText(userForm("user_name"))
+            @inputText(userForm("user_password"))
+            @CSRF.formField
+            <div class="buttons">
+                <button type="button" onClick="login()" class="btn btn-primary"
+                        data-dismiss="modal">Login
+                </button>
+            </div>
+            }
+        </div>
+    </div>
+    } else {
+    <div class="panel panel-default">
+        <div class="panel-heading">Logged in</div>
+        <div class="panel-body">
+            <a href="/logout" class="btn btn-primary" role="button">Log out</a>
+        </div>
+    </div>
+    }
+
+    @if(userModel.nonEmpty) {
+    <div class="panel panel-default">
+        <div class="panel-heading">Create blog entry as <b>@userModel.get.user_handle</b></div>
+        <div class="panel-body">
+            @inputText(blogForm("blog_text") , 'size -> 128)
+            @CSRF.formField
+            <div class="buttons">
+                <button type="button" onClick="postNewBlog()" class="btn btn-primary"
+                        data-dismiss="modal">create
+                </button>
+            </div>
+        </div>
+    </div>
+    }
+    <div class="panel panel-default">
+        <div class="panel-heading">Blogs</div>
+        <div class="panel-body">
+            <div class="container" id="currentData">
+            </div>
+        </div>
+    </div>
+</div>
+
+}
+

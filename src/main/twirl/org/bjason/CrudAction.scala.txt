@@ -1,0 +1,29 @@
+@(crud:org.bjason.Crud)
+
+package @(crud.getPackageName)@(crud.name.toLowerCase).controllers
+
+import javax.inject.{Inject, Singleton}
+import play.api.mvc.{Request, _}
+
+import scala.concurrent.{ExecutionContext, Future}
+import play.api.mvc.{AnyContent, BodyParser, Request, Result}
+
+import scala.concurrent.Future
+import com.google.inject.ImplementedBy
+
+@@ImplementedBy(classOf[CrudActionImplementation])
+trait CrudActionTrait extends ActionBuilder[Request, AnyContent] {
+
+  val playBodyParsers: PlayBodyParsers
+
+  override def parser: BodyParser[AnyContent] = playBodyParsers.default
+
+  def invokeBlock[A](request: Request[A], block: (Request[A]) => Future[Result]) = {
+    block(request)
+  }
+}
+
+@@Singleton
+class CrudActionImplementation @@Inject()(val playBodyParsers: PlayBodyParsers)(implicit val executionContext: ExecutionContext) extends CrudActionTrait {
+
+}

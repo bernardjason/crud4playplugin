@@ -1,0 +1,5 @@
+GET     /               org.bjason.blog.blog.controllers.BlogApi.getAll
+GET     /:blog_id          org.bjason.blog.blog.controllers.BlogApi.get(blog_id:Long)
+POST    /               org.bjason.blog.blog.controllers.BlogApi.insertupdate
+PUT     /               org.bjason.blog.blog.controllers.BlogApi.insertupdate
+DELETE  /:blog_id          org.bjason.blog.blog.controllers.BlogApi.delete(blog_id:Long)
