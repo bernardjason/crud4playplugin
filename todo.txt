@@ -2,27 +2,7 @@
 -----------------------------
    TO DO
 
-   how to add security to api controller? Need to allow for Default Action.async to be overridden with X.async
-
-    another example test project.
-        2 tables
-        1 user -> user_id, user_name and user_password
-        2 blog -> blog_id , user_id , blog_created , blog_text
-
-        login as user
-        blog as user
-        curl for admin
-
-
-
-for every api generate Action class and a trait
-module bind trait to a class.
-                # default to play.api.mvc.Action
-                api_Inject = "controllers.SecuredAction"
-                #default to Action
-                action = "securedAction.Action"
-
-
+    does it work with a Java play project???
 ---------------------------------
 Future
     unit tests, generate?? Would be nice touch
