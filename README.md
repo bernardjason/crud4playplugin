@@ -48,7 +48,7 @@ authentication.
 the plugin also generates a routes file in conf using the package as
 defined in the equivalent conf/crud file
 
-so in example project the package is org.bjason and the config file is Request so
+so in the example project the package is org.bjason and the config file is Request so
 we end up with this file
 
 org.bjason.request.routes
