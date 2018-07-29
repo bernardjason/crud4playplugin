@@ -78,10 +78,11 @@ class Application @Inject()(blog: BlogTableOperation, user: UserTableOperation, 
   def login = Action.async(parse.json) { implicit request =>
     val userPassword = request.body.as[UserPassword]
     var id: Option[String] = None
-    user.list().map { rows =>
+    user.list(None,None).map { rows =>
       rows.filter { r => r.user_name == userPassword.user_name && r.user_password == userPassword.user_password }.map { r =>
         id = Some(java.util.UUID.randomUUID().toString)
         cache.set(id.get, r)
+
         Logger.info(s"login is [${id}] and db is ${r.user_name} ${r.user_handle}")
       }
       if (id.isEmpty) {

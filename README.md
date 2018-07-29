@@ -4,6 +4,22 @@ this plugin can be used to generate the boiler plate code to access a
 database and provide a rest api for it that offers create read update delete.
 I use Slick for the database access.
 
+from the demo blog project for example
+
+GET     /tables/blog ( with optional query params sortBy and direction)
+
+GET     /tables/blog/<primary key>
+
+POST    /tables/blog
+
+PUT     /tables/blog
+
+DELETE  /tables/blog/:blog_id
+
+slick,controller and routes generated from single configuration file.
+
+You have to create the database as well as configure it in application.conf
+
 There are sample test projects under directory
 
 a simple project
@@ -12,7 +28,7 @@ a simple project
 
 that shows how the configuration file
 
-[conf/crud/Request.conf](conf/crud/Request.conf)
+[src/sbt-test/crudplugin/playhello/conf/crud/Request.conf](src/sbt-test/crudplugin/playhello/conf/crud/Request.conf)
 
 generates some simple code with an event simple form to create entries. There are
 also from curl commands as well.
@@ -43,7 +59,7 @@ files
 * Api.scala is the scala code for play to expose api
 * DataConvert is a class for handling mapping db timestamp to json
 * CrudAction is a trait and class for the api that can be overriden to implement
-authentication.
+authentication. The blog project shows some simple authentication on the api's.
 
 the plugin also generates a routes file in conf using the package as
 defined in the equivalent conf/crud file

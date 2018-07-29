@@ -63,7 +63,10 @@ class @(crud.name)Api @@Inject()(action:CrudActionTrait  , repo: @(crud.name)Tab
   }
   def getAll = action.async { implicit request =>
     Logger.info(s"${request.method} ${request.uri}")
-    repo.list().map { data =>
+    val sortedBy = request.getQueryString("sortBy")
+    val direction = request.getQueryString("direction")
+
+    repo.list(sortedBy,direction).map { data =>
       Ok(Json.toJson(data))
     }.recover {
       case e =>Logger.error("Caught exception: ",e)

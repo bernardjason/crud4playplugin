@@ -46,7 +46,7 @@ function postNewBlog() {
        data : JSON.stringify(json),
        url : '/tables/blog',
        success : function(json) {
-            getAll();
+            getAll('blog_id','desc');
        },
        error : function(response) {
                alert("error " + response.statusText + ":"+ response.status+" - " +response.responseText)
@@ -80,11 +80,11 @@ function login() {
     });
 }
 
-function getAll() {
+function getAll(col,dir) {
     $.ajax({
          type : 'GET',
          contentType : "application/json; charset=utf-8",
-         url : '/tables/blog',
+         url : '/tables/blog?sortBy='+col+'&direction='+dir,
          success : function(data) {
 
                 var txt = "<table class='table'>"
@@ -95,11 +95,12 @@ function getAll() {
                 }
                 txt += "</tr>"
                 txt += "</thead>"
-
+                /* backend sort it now
                 data.sort(function(a, b){
                     aa=parseInt(a['blog_id']) ;
                     bb=parseInt(b['blog_id']) ;
                     return bb - aa });
+                    */
                 for (y in data) {
                     var row = data[y]
                     txt += "<tr>"
@@ -120,7 +121,7 @@ function getAll() {
 
 $( document ).ready(function() {
     @if(userModel.nonEmpty) {
-        getAll();
+        getAll('blog_id','desc');
     } else {
         $('#currentData').html("Must be logged in to view blogs")
     }
@@ -131,7 +132,7 @@ $( document ).ready(function() {
 <div class="container">
     @if(userModel.isEmpty) {
     <div class="panel panel-default">
-        <div class="panel-heading">Login</div>
+        <div class="panel-heading">Login ( demo user <b>bernard</b> password <b>jason</b></div>
         <div class="panel-body">
             @form(routes.Application.index()) {
             @inputText(userForm("user_name"))

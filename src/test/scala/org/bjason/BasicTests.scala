@@ -7,6 +7,8 @@ import org.scalatest._
 import org.scalatest.matchers.{MatchResult, Matcher}
 import org.scalatest.Matchers._
 import scala.io.Source
+import scala.reflect.io.Directory
+
 
 trait CustomMatchers {
 
@@ -47,6 +49,9 @@ class BasicTests extends FlatSpec with MustMatchers {
 
   def withGeneratedCode( test:(CreateCode,Crud) => Unit): Unit = {
     val output = new File("target/tmpgen")
+    val directory = new Directory(output)
+    directory.deleteRecursively()
+
     output.mkdirs()
     CrudPlugin.createHere = output.toString
     //val crud = Crud("Hello","hello.world",List(),"")
@@ -124,6 +129,8 @@ class BasicTests extends FlatSpec with MustMatchers {
     CrudPlugin.configInDirectory = "src/test/resources"
     val packageName = "org/bjason/request"
     val output = new File("target/tmp/target/scala-2.12/src_managed/main/")
+    val directory = new Directory(output)
+    directory.deleteRecursively()
     output.mkdirs()
     val files = CrudPlugin.processAllFiles(output)
     files.length should equal (5)
@@ -140,6 +147,8 @@ class BasicTests extends FlatSpec with MustMatchers {
     CrudPlugin.configInDirectory = "src/test/resources"
     val packageName = "org/bjason/request"
     val output = new File("target/tmp/target/scala-2.12/src_managed/main/")
+    val directory = new Directory(output)
+    directory.deleteRecursively()
     output.mkdirs()
     val files = CrudPlugin.processAllFiles(output)
     files.length should equal (5)

@@ -36,8 +36,22 @@ class @(crud.name)TableOperation @@Inject()(dbConfigProvider: DatabaseConfigProv
     row.delete.map(returnStatus(_))
   }
 
-  def list(): Future[Seq[@(crud.name)Model]]  = db.run {
-    request.result
+  def list(sortedBy:Option[String],direction:Option[String]): Future[Seq[@(crud.name)Model]]  = db.run {
+    if ( sortedBy.isDefined ) {
+      val column = sortedBy.get
+      val directionSort = direction.getOrElse("asc").toLowerCase
+
+      s"${directionSort}_${column}" match {
+      @for(f <- crud.fields) {
+        case "asc_@(f.fieldName)" => request.sortBy (_.@(f.fieldName).asc).result
+        case "desc_@(f.fieldName)" => request.sortBy (_.@(f.fieldName).desc).result
+        }
+        case _ => throw new Exception("No such column or asc/desc")
+      }
+    } else {
+      request.result
+    }
+
   }
 
   def returnStatus(status:Long) =  status;

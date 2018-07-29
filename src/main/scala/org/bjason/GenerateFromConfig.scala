@@ -39,6 +39,7 @@ case class Crud(name:String,packageName:String,fields:List[Field],objectMapper:S
       }
       result.append(s""" )\n""")
     }
+
     result.append(s"      def * = (")
 
 
