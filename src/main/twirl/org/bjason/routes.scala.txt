@@ -1,5 +1,6 @@
 @(crud:org.bjason.Crud)
 GET     /               @(crud.getPackageName)@(crud.name.toLowerCase).controllers.@(crud.name)Api.getAll
+GET     /:query/:by          @(crud.getPackageName)@(crud.name.toLowerCase).controllers.@(crud.name)Api.getBy(query:String,by:String)
 GET     /:@(crud.fields(0).fieldName)          @(crud.getPackageName)@(crud.name.toLowerCase).controllers.@(crud.name)Api.get(@(crud.fields(0).fieldName):@(crud.fields(0).fieldType))
 POST    /               @(crud.getPackageName)@(crud.name.toLowerCase).controllers.@(crud.name)Api.insertupdate
 PUT     /               @(crud.getPackageName)@(crud.name.toLowerCase).controllers.@(crud.name)Api.insertupdate

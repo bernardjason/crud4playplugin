@@ -98,6 +98,36 @@ class SimpleTest extends PlaySpec with GuiceOneServerPerSuite with BeforeAndAfte
 
   }
 
+  "that a simple,get for a single entry with criteria" must {
+    "get one entry "  in withCreateEntry{
+
+
+      for( i <- 0 until 10 ) {
+        val wsClient = app.injector.instanceOf[WSClient]
+        val baseUrl = s"http://$myPublicAddress/tables/request"
+        val data = Json.obj(
+          "request_name" -> s"clash_${i}",
+          "request_desc" -> "today_${i}",
+          "request_start_date" -> "2018-06-11",
+          "request_required_for_date" -> "2018-06-30"
+        )
+        val response = await(wsClient.url(baseUrl).post(data))
+      }
+
+      val wsClient = app.injector.instanceOf[WSClient]
+      val baseUrl = s"http://$myPublicAddress/tables/request/request_name/clash_1"
+      val responseGet = await(wsClient.url(baseUrl).get())
+      responseGet.status mustBe (OK)
+      println(" GOT BACK " + responseGet.body)
+      val json = Json.parse(responseGet.body).as[JsArray]
+
+      (json(0) \ "request_name").as[String] should equal ("clash_1")
+      (json(0) \ "request_id").as[Int] should equal (3)
+
+    }
+
+  }
+
   "that a simple update" must {
     "get an entry "  in withCreateEntry{
       val wsClient = app.injector.instanceOf[WSClient]

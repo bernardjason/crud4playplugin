@@ -61,6 +61,18 @@ class @(crud.name)Api @@Inject()(action:CrudActionTrait  , repo: @(crud.name)Tab
       }
     }
   }
+
+  def getBy(query:String,by:String) = action.async { implicit request =>
+    Logger.info(s"${request.method} ${request.uri}")
+
+    repo.getBy(query,by).map { data =>
+      Ok(Json.toJson(data))
+    }.recover {
+      case e =>Logger.error("Caught exception: ",e)
+        InternalServerError
+    }
+  }
+
   def getAll = action.async { implicit request =>
     Logger.info(s"${request.method} ${request.uri}")
     val sortedBy = request.getQueryString("sortBy")

@@ -7,6 +7,6 @@ addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.6.13")
 
 sys.props.get("plugin.version") match {
   case Some(x) => addSbtPlugin("org.bjason" % "crud4playplugin" % x)
-  case _ => addSbtPlugin("org.bjason" % "crud4playplugin" % "0.3-SNAPSHOT" )
+  case _ => addSbtPlugin("org.bjason" % "crud4playplugin" % "0.4-SNAPSHOT" )
 }
 
