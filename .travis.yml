@@ -6,5 +6,6 @@ scala:
    - 2.12.6
 
 script:
+   - sbt ++$TRAVIS_SCALA_VERSION clean
    - sbt ++$TRAVIS_SCALA_VERSION test
    - sbt scripted
