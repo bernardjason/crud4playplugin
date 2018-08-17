@@ -156,6 +156,7 @@ class BasicTests extends FlatSpec with MustMatchers {
     route should exist
     Source.fromFile(route).toList.mkString should equal(
 """GET     /               org.bjason.request.controllers.RequestApi.getAll
+GET     /:query/:by          org.bjason.request.controllers.RequestApi.getBy(query:String,by:String)
 GET     /:request_id          org.bjason.request.controllers.RequestApi.get(request_id:Long)
 POST    /               org.bjason.request.controllers.RequestApi.insertupdate
 PUT     /               org.bjason.request.controllers.RequestApi.insertupdate
