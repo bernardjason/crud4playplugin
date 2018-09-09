@@ -43,9 +43,11 @@ class @(crud.name)TableOperation @@Inject()(dbConfigProvider: DatabaseConfigProv
 
     s"${query}" match {
     @for(f <- crud.fields) {
-      case "@(f.fieldName)" => request.filter (_.@(f.fieldName)@(if (f.fieldType.startsWith("Option")){".getOrElse(null)"}) === @(if (f.fieldType.contains("Long") ) { "by.toLong" }
-                                                                    else if ( f.fieldType.contains( "java.sql.Timestamp") ) { "toTimestamp(by)" }
-                                                                    else { "by" }    ) ).result
+      case "@(f.fieldName)" => request.filter (_.@(f.fieldName)@(if (f.fieldType.startsWith("Option")){".getOrElse(null)"}) === @(
+           if (f.fieldType.contains("Long") ) { "by.toLong" }
+           else if ( f.fieldType.contains( "java.sql.Timestamp") ) { "toTimestamp(by)" }
+           else if ( f.fieldType.contains( "Double") ) { "by.toDouble" }
+           else { "by" }    ) ).result
     }
       case _ => throw new Exception("No such column")
     }
