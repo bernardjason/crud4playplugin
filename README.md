@@ -8,6 +8,8 @@ from the demo blog project for example
 
 GET     /tables/blog ( with optional query params sortBy and direction)
 
+GET     /tables/blog/<by field>/<value>   (this queries database where <by field> = <value> . You can also use optional query params sortBy and direction)
+
 GET     /tables/blog/<primary key>
 
 POST    /tables/blog
@@ -15,6 +17,8 @@ POST    /tables/blog
 PUT     /tables/blog
 
 DELETE  /tables/blog/:blog_id
+
+Note if GET <by field>/<value> queries a timestamp it should be passes a long value not text representation
 
 slick,controller and routes generated from single configuration file.
 

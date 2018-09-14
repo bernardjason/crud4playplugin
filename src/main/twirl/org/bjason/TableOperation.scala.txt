@@ -39,34 +39,38 @@ class @(crud.name)TableOperation @@Inject()(dbConfigProvider: DatabaseConfigProv
   def toTimestamp(s:String) = {
     new java.sql.Timestamp(s.toLong)
   }
-  def getBy(query:String,by:String): Future[Seq[@(crud.name)Model]]  = db.run {
 
-    s"${query}" match {
-    @for(f <- crud.fields) {
-      case "@(f.fieldName)" => request.filter (_.@(f.fieldName)@(if (f.fieldType.startsWith("Option")){".getOrElse(null)"}) === @(
-           if (f.fieldType.contains("Long") ) { "by.toLong" }
-           else if ( f.fieldType.contains( "java.sql.Timestamp") ) { "toTimestamp(by)" }
-           else if ( f.fieldType.contains( "Double") ) { "by.toDouble" }
-           else { "by" }    ) ).result
+  def list(sortedBy:Option[String],direction:Option[String],query:String=null,by:String=null): Future[Seq[@(crud.name)Model]]  = db.run {
+    def myfilter(query:String,by:String) = {
+      if ( query != null ) {
+        s"${query}" match {
+        @for(f <- crud.fields) {
+          case "@(f.fieldName)" => request.filter (_.@(f.fieldName)@(if (f.fieldType.startsWith("Option")){".getOrElse(null)"}) === @(
+               if (f.fieldType.contains("Long") ) { "by.toLong" }
+               else if ( f.fieldType.contains( "java.sql.Timestamp") ) { "toTimestamp(by)" }
+               else if ( f.fieldType.contains( "Double") ) { "by.toDouble" }
+               else { "by" }    ) )
+        }
+          case _ => throw new Exception("No such column")
+        }
+      } else {
+        request
+      }
     }
-      case _ => throw new Exception("No such column")
-    }
-  }
 
-  def list(sortedBy:Option[String],direction:Option[String]): Future[Seq[@(crud.name)Model]]  = db.run {
     if ( sortedBy.isDefined ) {
       val column = sortedBy.get
       val directionSort = direction.getOrElse("asc").toLowerCase
 
       s"${directionSort}_${column}" match {
       @for(f <- crud.fields) {
-        case "asc_@(f.fieldName)" => request.sortBy (_.@(f.fieldName).asc).result
-        case "desc_@(f.fieldName)" => request.sortBy (_.@(f.fieldName).desc).result
+        case "asc_@(f.fieldName)" => myfilter(query,by).sortBy (_.@(f.fieldName).asc).result
+        case "desc_@(f.fieldName)" => myfilter(query,by).sortBy (_.@(f.fieldName).desc).result
         }
         case _ => throw new Exception("No such column or asc/desc")
       }
     } else {
-      request.result
+      myfilter(query,by).result
     }
 
   }
