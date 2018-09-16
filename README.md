@@ -106,5 +106,13 @@ the plugin can be built and tested using
 sbt:crud4playplugin> scripted
 ```
 
+Automated builds here
+[https://travis-ci.com/bernardjason/crud4playplugin/](https://travis-ci.com/bernardjason/crud4playplugin/)
+
+and to release code
+
+```
+sbt release
+```
 
 
