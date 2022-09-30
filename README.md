@@ -107,7 +107,8 @@ sbt:crud4playplugin> scripted
 ```
 
 Automated builds here
-[https://travis-ci.com/bernardjason/crud4playplugin/](https://travis-ci.com/bernardjason/crud4playplugin/)
+    
+[https://app.travis-ci.com/github/bernardjason/crud4playplugin](https://app.travis-ci.com/github/bernardjason/crud4playplugin)
 
 and to release code
 
